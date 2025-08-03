@@ -1,5 +1,5 @@
 '''
-1次1折  为了eco 可视化
+5 次结果汇总求平均值
 
 '''
 import csv
@@ -12,7 +12,7 @@ import sklearn.metrics as sk
 
 
 def method(clf, name):
-	fileList =  ['eco',
+	fileList =  ['eco','shu','yea',
 		]
 
 	with open(
@@ -34,10 +34,10 @@ def method(clf, name):
 			Mava = []
 			MAUC = []
 			Recall_pre = []
-			for z in range(1,2):
+			for z in range(1,6):
 				# print(z)
 				# for j in range(1,6):
-				for i in range(5,6):
+				for i in range(1,6):
 					# print('i=',i)
 					df_pred = pd.read_csv(
 						'{}_TestData/{}Result/{}_{}/{}/{}_label.csv'.format(
@@ -56,7 +56,7 @@ def method(clf, name):
 					# print(label)
 					# print('{}_TestData/Result/{}_{}/{}_sigma={}/{}_label.csv'.format(z, z, i,clf,k,fn) )
 					recall1, precision, gmean1 = MultiPMeasurs.calculate_micro_gmean1(
-						label, prd)  # recall1,recall2，macro_recall 一样
+						label, prd)  
 					recall2, specificity, gmean2 = MultiPMeasurs.calculate_micro_gmean2(
 						label, prd)
 					pre_recall,macro_recall, macro_precision, gmean_score = \
@@ -64,18 +64,17 @@ def method(clf, name):
 						label, prd)
 					f1_score = sk.f1_score(label, prd, average = 'macro')
 					#print('pre_recall',pre_recall,macro_recall,)
-					# imblearn gmean 是每个类别的灵敏度的乘积的更高次方根。
-
+					
 
 
 					mava = MultiPMeasurs.MAvA(label, prd)
 
-					# 假设 label 是测试集的标签
+					
 					unique_classes = np.unique ( label )
-					print ( "y_true shape:" , label.shape )  # 应为 (n_samples,)
-					print ( "y_pred_proba shape:" ,
-							prdpro.shape )  # 应为 (n_samples, n_classes)
-					print(prdpro)
+					#print ( "y_true shape:" , label.shape )  # 应为 (n_samples,)
+					#print ( "y_pred_proba shape:" ,
+					#		prdpro.shape )  # 应为 (n_samples, n_classes)
+					#print(prdpro)
 					mauc = sk.roc_auc_score(label, prdpro,average = 'macro',multi_class = 'ovo'
 					                        ) #average = 'macro',multi_class = 'ovo',labels=unique_classes
 					
@@ -110,21 +109,12 @@ def method(clf, name):
 
 
 if __name__ == '__main__':
-	name = 'KDN'  #   AMG2_
+	name = 'AMG2_'  #  KDN
 	
 	# Omether(name)
-	list = ['mlp', 'CART']# 'mlp_0.3','CART_0.3' ]
-	# clf = 'nb'
-	# F1,Recall,Precision,Specificity,GMEAN,Gmean1,Gmean2,Mava ,MAUC=
-	for clf in list:
-		method(clf, name = name)
-
-	name2 = 'AMG2'  #
-
-	# Omether(name)
 	list = [ 'mlp_0.3','CART_0.3' ]  #
-	# clf = 'nb'
+	clf = 'CART'
 	# F1,Recall,Precision,Specificity,GMEAN,Gmean1,Gmean2,Mava ,MAUC=
 	for clf in list :
-		method ( clf , name = name2 )
+		method ( clf , name = name)
 

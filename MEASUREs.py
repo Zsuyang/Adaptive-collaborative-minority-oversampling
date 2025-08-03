@@ -1,6 +1,4 @@
-'''
-MFM G-mean MAvA Specificity Recall minorityRecall  轮盘赌 Group
-'''
+
 from collections import Counter
 import sklearn as sk
 import math
